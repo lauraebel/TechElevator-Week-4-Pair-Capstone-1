@@ -1,6 +1,70 @@
 package com.techelevator.view;
 
+import java.util.Map;
+import java.util.Scanner;
+
+import com.techelevator.CashRegister;
+import com.techelevator.inventory.Fridge;
+
 public class Menu {
 
-	
+	private CashRegister cashRegister = new CashRegister();
+
+	private Scanner in = new Scanner(System.in);
+
+	public int mainMenu(Map<String, Fridge> inventory) {
+		System.out.println("(1) Display Catering Items\n(2) Order\n(3) Quit");
+		int choice = in.nextInt();
+		in.nextLine();
+		return choice;
+	}
+
+	public void displayItemMenuSoldOut(Map.Entry<String, Fridge> entry) {
+
+		System.out.println(entry.getKey() + " | Item: " + entry.getValue().getItem().getName() + " | Price per Item: $"
+				+ entry.getValue().getItem().getPrice() + " | Amount Left: " + "SOLD OUT\n");
+	}
+
+	public void displayItemMenu(Map.Entry<String, Fridge> entry) {
+		System.out.println(entry.getKey() + " | Item: " + entry.getValue().getItem().getName() + " | Price per Item: $"
+				+ entry.getValue().getItem().getPrice() + " | Amount Left: " + entry.getValue().getItemCount());
+		System.out.println();
+	}
+
+	public int displayOrderMenu() {
+			System.out.println("(1) Add Money\n(2) Select Products\n(3) Complete Transaction\nCurrent Account Balance: "
+					+ "$" + cashRegister.getBalance());
+
+			int choiceTwo = in.nextInt();
+			in.nextLine();
+			return choiceTwo;
+			
+	}
+
+	public void addMoneyMenu() {
+			System.out.println("How much money do you want to add? (whole dollar amounts only) ");
+
+			int money = in.nextInt();
+			in.nextLine();
+
+			cashRegister.addMoney(money);
+		
+	}
+
+	public void overFiveThousand() {
+		System.out.println("Your total balance cannot exceed $5,000. Please re-enter your desired deposit ");
+	}
+
+	public void belowZero() {
+		System.out.println("You cannot deposit a negative number. Please re-enter your desired deposit ");
+	}
+
+	public void shoppingCartMenu() {
+		while (true) {
+			System.out.println("Enter the Product Code for the Item you want to order: ");
+
+			String code = in.nextLine();
+
+		}
+	}
 }
