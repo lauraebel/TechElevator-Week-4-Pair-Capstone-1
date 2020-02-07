@@ -17,4 +17,10 @@ public class Fridge {
 		return item;
 	}
 
+	public void setItemCount(int itemCount) {
+		this.itemCount = itemCount;
+	}
+	
+	
+
 }

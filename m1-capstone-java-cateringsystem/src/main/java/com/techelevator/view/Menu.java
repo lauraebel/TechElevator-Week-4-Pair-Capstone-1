@@ -1,14 +1,12 @@
 package com.techelevator.view;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.techelevator.CashRegister;
 import com.techelevator.inventory.Fridge;
 
 public class Menu {
-
-	private CashRegister cashRegister = new CashRegister();
 
 	private Scanner in = new Scanner(System.in);
 	
@@ -35,9 +33,9 @@ public class Menu {
 		System.out.println();
 	}
 
-	public int displayOrderMenu() {
+	public int displayOrderMenu(BigDecimal balance) {
 		System.out.println("(1) Add Money\n(2) Select Products\n(3) Complete Transaction\nCurrent Account Balance: "
-				+ "$" + cashRegister.getBalance());
+				+ "$" + balance);
 
 		int choiceTwo = in.nextInt();
 		in.nextLine();
