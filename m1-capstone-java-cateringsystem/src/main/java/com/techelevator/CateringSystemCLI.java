@@ -35,14 +35,30 @@ public class CateringSystemCLI {
 				}
 			}
 			if (choice == 2) {
-				while(true) {
+				while (true) {
 					int choiceTwo = menu.displayOrderMenu();
 
 					if (choiceTwo == 1) {
-						menu.addMoneyMenu();
-						cashRegister.addMoney();
+						int money = menu.addMoneyMenu();
+						cashRegister.addMoney(money);
 					}
+					if (choiceTwo == 2) {
 
+						while (true) {
+							String code = menu.shoppingCartMenuCode();
+							
+							if (!inventory.containsKey(code)) {
+								menu.codeDoesNotExist();
+							} if (inventory.get(code).getItemCount() == 0) {
+								menu.productSoldOut();
+							}
+							int amount = menu.amountOfProductDesired();
+							
+							if (inventory.get(code).getItemCount() < amount) {
+								menu.desiredIsMoreThanAvailable();
+							}
+						}
+					}
 				}
 			}
 			// TODO quit

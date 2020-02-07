@@ -32,23 +32,21 @@ public class Menu {
 	}
 
 	public int displayOrderMenu() {
-			System.out.println("(1) Add Money\n(2) Select Products\n(3) Complete Transaction\nCurrent Account Balance: "
-					+ "$" + cashRegister.getBalance());
+		System.out.println("(1) Add Money\n(2) Select Products\n(3) Complete Transaction\nCurrent Account Balance: "
+				+ "$" + cashRegister.getBalance());
 
-			int choiceTwo = in.nextInt();
-			in.nextLine();
-			return choiceTwo;
-			
+		int choiceTwo = in.nextInt();
+		in.nextLine();
+		return choiceTwo;
+
 	}
 
-	public void addMoneyMenu() {
-			System.out.println("How much money do you want to add? (whole dollar amounts only) ");
+	public int addMoneyMenu() {
+		System.out.println("How much money do you want to add? (whole dollar amounts only) ");
 
-			int money = in.nextInt();
-			in.nextLine();
-
-			cashRegister.addMoney(money);
-		
+		int money = in.nextInt();
+		in.nextLine();
+		return money;
 	}
 
 	public void overFiveThousand() {
@@ -59,12 +57,31 @@ public class Menu {
 		System.out.println("You cannot deposit a negative number. Please re-enter your desired deposit ");
 	}
 
-	public void shoppingCartMenu() {
-		while (true) {
-			System.out.println("Enter the Product Code for the Item you want to order: ");
+	public String shoppingCartMenuCode() {
+		System.out.println("Enter the product code for the item you want to order: ");
 
-			String code = in.nextLine();
+		String code = in.nextLine();
+		return code;
+	}
 
-		}
+	public void codeDoesNotExist() {
+		System.out.println("That is not a valid product code.");
+
+	}
+	
+	public void productSoldOut() {
+		System.out.println("Sorry, this product is sold out.");
+	}
+	
+	public int amountOfProductDesired() {
+		System.out.println("How many of this item do you want to order? ");
+		
+		int amount = in.nextInt();
+		in.nextLine();
+		return amount;
+	}
+	
+	public void desiredIsMoreThanAvailable() {
+		System.out.println("Sorry, there is not enough of that item to fulfill your order.");
 	}
 }
