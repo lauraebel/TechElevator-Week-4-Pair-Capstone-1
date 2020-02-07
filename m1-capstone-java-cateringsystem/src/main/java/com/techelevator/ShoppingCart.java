@@ -13,9 +13,12 @@ public class ShoppingCart {
 	public Map<String, Fridge> getShoppingCart() {
 		return shoppingCart;
 	}
-	
-	public void addToCart(String key, Fridge fridge, int amount) {
+	public Fridge updateAmountInFridge(Fridge fridge, int amount) {
 		fridge.setItemCount(amount);
+		return fridge;
+	}
+
+	public void addToCart(String key, Fridge fridge) {
 		shoppingCart.put(key, fridge);
 	}
 	

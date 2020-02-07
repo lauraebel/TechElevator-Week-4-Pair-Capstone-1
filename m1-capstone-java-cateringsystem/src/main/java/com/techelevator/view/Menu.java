@@ -40,7 +40,6 @@ public class Menu {
 		int choiceTwo = in.nextInt();
 		in.nextLine();
 		return choiceTwo;
-
 	}
 
 	public int addMoneyMenu() {
@@ -66,4 +65,21 @@ public class Menu {
 		return amount;
 	}
 
+	public void transactionReport(Map.Entry<String, Fridge> entry) {
+		System.out.printf("%-5d %-15s %-30s $%-10.2f $%-10.2f\n", entry.getValue().getItemCount(), entry.getValue().getItem().getType(), 
+				entry.getValue().getItem().getName(), entry.getValue().getItem().getPrice(), (entry.getValue().getItem().getPrice()
+						.multiply(new BigDecimal(entry.getValue().getItemCount()))));
+	}
+	
+	public void printTransactionTotal(BigDecimal total) {
+		System.out.println();
+		System.out.println("Total: $" + total);
+		System.out.println();
+	}
+	
+	public void displayChange(int twenties, int tens, int fives, int ones, int quarters, int dimes, int nickels) {
+		System.out.printf("Twenties: %d \nTens: %d \nFives: %d \nOnes: %d \nQuarters: %d \nDimes: %d \nNickels: %d \n", 
+				twenties, tens, fives, ones, quarters, dimes, nickels);
+		System.out.println();
+	}
 }

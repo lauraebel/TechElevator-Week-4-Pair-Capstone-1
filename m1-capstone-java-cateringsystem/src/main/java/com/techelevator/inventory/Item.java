@@ -6,10 +6,12 @@ public class Item {
 	
 	private String name;
 	private BigDecimal price;
+	private String type;
 	
-	public Item(String name, BigDecimal price) {
+	public Item(String name, BigDecimal price, String type) {
 		this.name = name;
 		this.price = price;
+		this.type = type;
 	}
 
 	public String getName() {
@@ -20,6 +22,8 @@ public class Item {
 		return price;
 	}
 	
-	
+	public String getType() {
+		return type;
+	}
 
 }
