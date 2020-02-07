@@ -14,12 +14,6 @@ public class CashRegister {
 	}
 	
 	public void addMoney(int money) {
-		if((balance.add(new BigDecimal(money)).compareTo(new BigDecimal(5000)) == 1)) {
-			menu.overFiveThousand();
-		} if(money < 0) {
-			menu.belowZero();
-		} else {
 			balance = balance.add(new BigDecimal(money));
-		}
 	}
 }

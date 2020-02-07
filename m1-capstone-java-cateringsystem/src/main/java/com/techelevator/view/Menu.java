@@ -11,6 +11,10 @@ public class Menu {
 	private CashRegister cashRegister = new CashRegister();
 
 	private Scanner in = new Scanner(System.in);
+	
+	public void displayMessage(String message) {
+		System.out.println(message);
+	}
 
 	public int mainMenu(Map<String, Fridge> inventory) {
 		System.out.println("(1) Display Catering Items\n(2) Order\n(3) Quit");
@@ -49,28 +53,11 @@ public class Menu {
 		return money;
 	}
 
-	public void overFiveThousand() {
-		System.out.println("Your total balance cannot exceed $5,000. Please re-enter your desired deposit ");
-	}
-
-	public void belowZero() {
-		System.out.println("You cannot deposit a negative number. Please re-enter your desired deposit ");
-	}
-
 	public String shoppingCartMenuCode() {
 		System.out.println("Enter the product code for the item you want to order: ");
 
 		String code = in.nextLine();
 		return code;
-	}
-
-	public void codeDoesNotExist() {
-		System.out.println("That is not a valid product code.");
-
-	}
-	
-	public void productSoldOut() {
-		System.out.println("Sorry, this product is sold out.");
 	}
 	
 	public int amountOfProductDesired() {
@@ -80,8 +67,5 @@ public class Menu {
 		in.nextLine();
 		return amount;
 	}
-	
-	public void desiredIsMoreThanAvailable() {
-		System.out.println("Sorry, there is not enough of that item to fulfill your order.");
-	}
+
 }
