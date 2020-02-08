@@ -22,37 +22,41 @@ public class CashRegister {
 			balance = balance.add(new BigDecimal(money));
 	}
 	
-	public void completeTransaction(BigDecimal total) {
+	public void purchaseItem(BigDecimal total) {
 		balance = balance.subtract(total);
 	}
 	
 	public void giveChange() {
-		while(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(0)) == 1) {
-			if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(20)) >= 0) {
+		while(balance.setScale(2, RoundingMode.FLOOR).compareTo(new BigDecimal(0).setScale(2, RoundingMode.FLOOR)) == 1) {
+			
+			if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(20).setScale(2, RoundingMode.FLOOR)) >= 0) {
 				twentyDollarBill++;
-				balance = balance.setScale(2, RoundingMode.CEILING).subtract(new BigDecimal(20));
-			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(10)) >= 0) {
+				balance = balance.subtract(new BigDecimal(20));
+				
+			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(10).setScale(2, RoundingMode.FLOOR)) >= 0) {
 				tenDollarBill++;
-				balance = balance.setScale(2, RoundingMode.CEILING).subtract(new BigDecimal(10));
-			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(5)) >= 0) {
+				balance = balance.subtract(new BigDecimal(10));
+				
+			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(5).setScale(2, RoundingMode.FLOOR)) >= 0) {
 				fiveDollarBill++;
-				balance = balance.setScale(2, RoundingMode.CEILING).subtract(new BigDecimal(5));
-			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(1)) >= 0) {
+				balance = balance.subtract(new BigDecimal(5));
+				
+			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(1).setScale(2, RoundingMode.FLOOR)) >= 0) {
 				oneDollarBill++;
-				balance = balance.setScale(2, RoundingMode.CEILING).subtract(new BigDecimal(1));
-			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(.25)) >= 0) {
+				balance = balance.subtract(new BigDecimal(1));
+				
+			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(.25).setScale(2, RoundingMode.FLOOR)) >= 0) {
 				quarter++;
-				balance = balance.setScale(2, RoundingMode.CEILING).subtract(new BigDecimal(.25));
-			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(.10)) >= 0) {
+				balance = balance.subtract(new BigDecimal(.25));
+				
+			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(.10).setScale(2, RoundingMode.FLOOR)) >= 0) {
 				dime++;
-				balance = balance.setScale(2, RoundingMode.CEILING).subtract(new BigDecimal(.10));
+				balance = balance.subtract(new BigDecimal(.10));
+				
 			} else if(balance.setScale(2, RoundingMode.CEILING).compareTo(new BigDecimal(.05).setScale(2, RoundingMode.FLOOR)) >= 0) {
 				nickel++;
 				balance = balance.subtract(new BigDecimal(.05));
-			} else {
-				balance = new BigDecimal(0);
 			}
-			System.out.println(balance);
 		}
 	}
 

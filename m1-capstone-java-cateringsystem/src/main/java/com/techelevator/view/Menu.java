@@ -1,6 +1,7 @@
 package com.techelevator.view;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -15,10 +16,21 @@ public class Menu {
 	}
 
 	public int mainMenu(Map<String, Fridge> inventory) {
+		boolean loop;
+		int choice = 0;
+		do {
 		System.out.println("(1) Display Catering Items\n(2) Order\n(3) Quit");
-		int choice = in.nextInt();
-		in.nextLine();
-		return choice;
+		try {
+			loop = false;
+			choice = in.nextInt();
+			
+		} catch (InputMismatchException e) {
+			System.out.println("Error: Invalid option. Please choose again.");
+			loop = true;
+		} in.nextLine();
+
+		} while (loop);
+			return choice;
 	}
 
 	public void displayItemMenuSoldOut(Map.Entry<String, Fridge> entry) {
@@ -34,20 +46,40 @@ public class Menu {
 	}
 
 	public int displayOrderMenu(BigDecimal balance) {
+		boolean loop;
+		int choiceTwo = 0;
+		do {
 		System.out.println("(1) Add Money\n(2) Select Products\n(3) Complete Transaction\nCurrent Account Balance: "
 				+ "$" + balance);
+		try {
+			loop = false;
+			choiceTwo = in.nextInt();
+			
+		} catch (InputMismatchException e) {
+			System.out.println("Error: Invalid option. Please choose again.");
+			loop = true;
+		} in.nextLine();
 
-		int choiceTwo = in.nextInt();
-		in.nextLine();
-		return choiceTwo;
+		} while (loop);
+			return choiceTwo;
 	}
 
 	public int addMoneyMenu() {
+		boolean loop;
+		int money = 0;
+		do {
 		System.out.println("How much money do you want to add? (whole dollar amounts only) ");
+		try {
+			loop = false;
+			money = in.nextInt();
+			
+		} catch (InputMismatchException e) {
+			System.out.println("Error: Please enter a number value.");
+			loop = true;
+		} in.nextLine();
 
-		int money = in.nextInt();
-		in.nextLine();
-		return money;
+		} while (loop);
+			return money;
 	}
 
 	public String shoppingCartMenuCode() {
@@ -58,11 +90,21 @@ public class Menu {
 	}
 	
 	public int amountOfProductDesired() {
-		System.out.println("How many of this item do you want to order? ");
-		
-		int amount = in.nextInt();
-		in.nextLine();
-		return amount;
+		boolean loop;
+		int amount = 0;
+		do {
+			System.out.println("How many of this item do you want to order? ");				
+		try {
+			loop = false;
+			amount = in.nextInt();
+			
+		} catch (InputMismatchException e) {
+			System.out.println("Error: Please enter a number value.");
+			loop = true;
+		} in.nextLine();
+
+		} while (loop);
+			return amount;
 	}
 
 	public void transactionReport(Map.Entry<String, Fridge> entry) {

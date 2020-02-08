@@ -34,39 +34,52 @@ public class CateringSystemCLI {
 		this.menu = menu;
 	}
 
-	public void run() throws IOException {
-		inventory = reader.restock("cateringsystem.csv");
+	public void run(){
+		try { 
+			inventory = reader.restock("cateringsystem.csv");
+		} catch (FileNotFoundException e) {
+			System.out.println("Failed to Read Inventory");
+		}
 		while (true) {
+			
 			int choice = menu.mainMenu(inventory);
 
-			if (choice == 1) {
+			if (choice == 1) { //(1) Display Catering Items
 
 				for (Map.Entry<String, Fridge> entry : inventory.entrySet()) {
 
 					if (entry.getValue().getItemCount() == 0) {
 						menu.displayItemMenuSoldOut(entry);
+						
 					} else {
 						menu.displayItemMenu(entry);
 					}
 				}
 			}
-			if (choice == 2) {
+			if (choice == 2) { //(2) Order
 				while (true) {
 					int choiceTwo = menu.displayOrderMenu(cashRegister.getBalance());
 
-					if (choiceTwo == 1) {
+					if (choiceTwo == 1) { //(1) Add Money
 						int money = menu.addMoneyMenu();
+						
 						if ((cashRegister.getBalance().add(new BigDecimal(money))
 								.compareTo(new BigDecimal(5000)) == 1)) {
 							menu.displayMessage(OVER_FIVE_THOUSAND);
+							
 						} else if (money < 0) {
 							menu.displayMessage(BELOW_ZERO);
+							
 						} else {
 							cashRegister.addMoney(money);
-							textLogWriter.log(ADD_MONEY, new BigDecimal(money), cashRegister.getBalance());
+							try { 
+								textLogWriter.log(ADD_MONEY, new BigDecimal(money), cashRegister.getBalance());
+							} catch (IOException e) {
+								System.out.println("Unable to Write Report");
+							}
 						}
 					}
-					if (choiceTwo == 2) {
+					if (choiceTwo == 2) { //(2) Select Products
 
 						while (true) {
 							String code = menu.shoppingCartMenuCode().toUpperCase();
@@ -86,16 +99,25 @@ public class CateringSystemCLI {
 								if (cart.getKey().equalsIgnoreCase(code)) {
 									Fridge amountAdder = new Fridge(cart.getValue().getItem());
 									shoppingCart.updateAmountInFridge(amountAdder, amount);
+									
 									if(shoppingCart.shoppingTotal().add(amountAdder.getItem().getPrice()).multiply
 											(new BigDecimal(amountAdder.getItemCount())).compareTo(cashRegister.getBalance()) == 1) {
 										menu.displayMessage(NOT_ENOUGH_MONEY);
+										 
 									} else {
 										shoppingCart.addToCart(cart.getKey(), amountAdder);
+										cashRegister.purchaseItem(amountAdder.getItem().getPrice().multiply(new BigDecimal(amountAdder.getItemCount())));
 										cart.getValue().setItemCount((cart.getValue().getItemCount()) - amount);
 										menu.displayMessage(ADDED_TO_CART);
-										textLogWriter.log(amountAdder.getItemCount() + " " + amountAdder.getItem().getName() + " " 
-										+ cart.getKey(), amountAdder.getItem().getPrice().multiply(new BigDecimal
-										(amountAdder.getItemCount())), cashRegister.getBalance());
+										
+										try { 
+											textLogWriter.log(amountAdder.getItemCount() + " " + amountAdder.getItem().getName() + " " 
+													+ cart.getKey(), amountAdder.getItem().getPrice().multiply(new BigDecimal
+													(amountAdder.getItemCount())), cashRegister.getBalance());									
+										} catch (IOException e) {
+											System.out.println("Unable to Write Report");
+										}
+					
 									}
 							
 								}
@@ -103,17 +125,24 @@ public class CateringSystemCLI {
 							break;
 						}
 					}
-					if (choiceTwo == 3) {
-						cashRegister.completeTransaction(shoppingCart.shoppingTotal());
+					if (choiceTwo == 3) { //(3) Complete Transaction and Give Change
 						for(Map.Entry<String, Fridge> entry : shoppingCart.getShoppingCart().entrySet()) {
 							menu.transactionReport(entry);
 						}
 						menu.printTransactionTotal(shoppingCart.shoppingTotal());
 						BigDecimal holdBalance = cashRegister.getBalance();
 						cashRegister.giveChange();
-						textLogWriter.log(GIVE_CHANGE, holdBalance, cashRegister.getBalance());
+						
+						try { 
+							textLogWriter.log(GIVE_CHANGE, holdBalance, cashRegister.getBalance());
+						} catch (IOException e) {
+							System.out.println("Unable to Write Report");
+						}
+						
 						menu.displayChange(cashRegister.getTwentyDollarBill(), cashRegister.getTenDollarBill(), cashRegister.getFiveDollarBill(),
 								cashRegister.getOneDollarBill(), cashRegister.getQuarter(), cashRegister.getDime(), cashRegister.getNickel());
+						
+						shoppingCart = new ShoppingCart(); //empties shopping cart after transaction completed
 						break;
 					}
 					else if (choiceTwo != 1 && choiceTwo != 2 && choiceTwo != 3) {
@@ -122,7 +151,7 @@ public class CateringSystemCLI {
 					}
 				}
 			}
-			if (choice == 3) {
+			if (choice == 3) { //(3) Quit
 				break;
 			}
 			else if (choice != 1 && choice != 2 && choice != 3) {
@@ -131,8 +160,7 @@ public class CateringSystemCLI {
 			}
 		}
 	}
-
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Menu menu = new Menu();
 		CateringSystemCLI cli = new CateringSystemCLI(menu);
 		cli.run();
