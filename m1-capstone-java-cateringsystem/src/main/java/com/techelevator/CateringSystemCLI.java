@@ -1,12 +1,14 @@
 package com.techelevator;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
 
 import com.techelevator.inventory.Fridge;
 import com.techelevator.reader.TextFileReader;
 import com.techelevator.view.Menu;
+import com.techelevator.writer.TextLogWriter;
 
 public class CateringSystemCLI {
 
@@ -15,7 +17,8 @@ public class CateringSystemCLI {
 	private TextFileReader reader = new TextFileReader();
 	private CashRegister cashRegister = new CashRegister();
 	private ShoppingCart shoppingCart = new ShoppingCart();
-
+	private TextLogWriter textLogWriter = new TextLogWriter();
+	
 	private static final String OVER_FIVE_THOUSAND = "Your total balance cannot exceed $5,000. Please re-enter your desired deposit ";
 	private static final String BELOW_ZERO = "You cannot deposit a negative number. Please re-enter your desired deposit ";
 	private static final String CODE_DOES_NOT_EXIST = "That is not a valid product code.";
@@ -24,13 +27,14 @@ public class CateringSystemCLI {
 	private static final String ADDED_TO_CART = "Selected item(s) successfully added to your shopping cart.";
 	private static final String NOT_ENOUGH_MONEY = "Sorry, you do not have enough money in your account to make this purchase.";
 	private static final String NOT_VALID_OPTION = "That is not a valid option.";
-	
+	private static final String ADD_MONEY = "ADD MONEY";
+	private static final String GIVE_CHANGE = "GIVE CHANGE";
 	
 	public CateringSystemCLI(Menu menu) {
 		this.menu = menu;
 	}
 
-	public void run() throws FileNotFoundException {
+	public void run() throws IOException {
 		inventory = reader.restock("cateringsystem.csv");
 		while (true) {
 			int choice = menu.mainMenu(inventory);
@@ -59,6 +63,7 @@ public class CateringSystemCLI {
 							menu.displayMessage(BELOW_ZERO);
 						} else {
 							cashRegister.addMoney(money);
+							textLogWriter.log(ADD_MONEY, new BigDecimal(money), cashRegister.getBalance());
 						}
 					}
 					if (choiceTwo == 2) {
@@ -88,6 +93,9 @@ public class CateringSystemCLI {
 										shoppingCart.addToCart(cart.getKey(), amountAdder);
 										cart.getValue().setItemCount((cart.getValue().getItemCount()) - amount);
 										menu.displayMessage(ADDED_TO_CART);
+										textLogWriter.log(amountAdder.getItemCount() + " " + amountAdder.getItem().getName() + " " 
+										+ cart.getKey(), amountAdder.getItem().getPrice().multiply(new BigDecimal
+										(amountAdder.getItemCount())), cashRegister.getBalance());
 									}
 							
 								}
@@ -101,7 +109,9 @@ public class CateringSystemCLI {
 							menu.transactionReport(entry);
 						}
 						menu.printTransactionTotal(shoppingCart.shoppingTotal());
+						BigDecimal holdBalance = cashRegister.getBalance();
 						cashRegister.giveChange();
+						textLogWriter.log(GIVE_CHANGE, holdBalance, cashRegister.getBalance());
 						menu.displayChange(cashRegister.getTwentyDollarBill(), cashRegister.getTenDollarBill(), cashRegister.getFiveDollarBill(),
 								cashRegister.getOneDollarBill(), cashRegister.getQuarter(), cashRegister.getDime(), cashRegister.getNickel());
 						break;
@@ -122,7 +132,7 @@ public class CateringSystemCLI {
 		}
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
 		Menu menu = new Menu();
 		CateringSystemCLI cli = new CateringSystemCLI(menu);
 		cli.run();
