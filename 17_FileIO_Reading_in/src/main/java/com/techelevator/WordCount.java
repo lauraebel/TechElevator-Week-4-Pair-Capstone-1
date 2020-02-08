@@ -27,9 +27,9 @@ public class WordCount {
 			while (fileScanner.hasNextLine()) {
 				String line = fileScanner.nextLine();
 				String[] words = line.split("\\s+");
-				String[] sentences = line.split("\\.|\\?|\\!");
+				String[] sentences = line.split("\\.|\\!|\\?");
 				wordCount += words.length;
-				sentenceCount += sentences.length-1;
+				sentenceCount += sentences.length - 1;
 				
 			} 
 			System.out.printf("Word Count: %d %nSentence Count:%d", wordCount, sentenceCount);
